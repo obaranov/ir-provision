@@ -1,0 +1,12 @@
+- name: install required packages
+  yum: name=wget state=present
+  become: yes
+  become_method: sudo
+
+- name: remove pre-existing base image
+  file:
+      state: absent
+      dest: "/var/lib/libvirt/images/base_image.qcow2"
+
+- include: "create_vms.yml"
+  with_dict: "{{ provisioner.topology.nodes }}"

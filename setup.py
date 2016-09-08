@@ -9,7 +9,7 @@ setup(
     packages=find_packages(),
     long_description=open(join(prj_dir, 'README.rst')).read(),
     entry_points={
-        'console_scripts': ['ir-provisioner=main:main']
+        'console_scripts': ['infrared=main:main']
     },
     author='rhos-qe',
     author_email='rhos-qe-dept@redhat.com'

@@ -18,14 +18,23 @@ subparsers:
                   host-key:
                       type: Value
                       help: "User's SSH key"
-                      default: '~/.ssh/id_rsa'
+                      required: yes
 
             - title: image
               options:
                   image:
                       type: YamlFile
-                      help: 'The image to use for nodes provisioning. Check the "sample.yml.example" for example.'
-                      required: yes
+                      help: |
+                        (DEPRECATED)
+                        The image to use for nodes provisioning.
+                        Check the "sample.yml.example" for example.
+
+                  image-url:
+                      type: Value
+                      help: |
+                        URL to the image used for node provisioning.
+                        Default is internal path for RHEL guest image
+                      default: https://url.corp.redhat.com/images-rhel-guest-image-7-2-20160302-0-x86-64-qcow2
 
             - title: topology
               options:
@@ -36,7 +45,7 @@ subparsers:
                   topology-nodes:
                       type: Topology
                       help: Provision topology.
-                      default: "undercloud:1,controller:1,compute:1"
+                      required: yes
 
             - title: cleanup
               options:

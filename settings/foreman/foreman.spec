@@ -28,8 +28,9 @@ subparsers:
                       default: cycle
                   wait:
                       type: Value
-                      default: true
-                      help: 'Whether we should wait for the host given the "rebuild" state was set.'
+                      choices: ['yes', 'no']
+                      default: 'yes'
+                      help: 'Wait for host to return from rebuild'
 
             - title: Host details
               options:
@@ -47,3 +48,9 @@ subparsers:
                   host-key:
                       type: Value
                       help: "User's SSH key"
+                  host-ipmi-username:
+                      type: Value
+                      help: "Host IPMI username"
+                  host-ipmi-password:
+                      type: Value
+                      help: "Host IPMI password"

@@ -1,4 +1,4 @@
 pip
-git+https://github.com/rhos-infra/infrared-core.git@provisioner-fix#egg=infrared-core
+git+https://github.com/rhos-infra/infrared-core.git@master#egg=infrared-core
 # install itself
 -e .

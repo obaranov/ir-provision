@@ -1,0 +1,65 @@
+- name: install packages
+  yum:
+      name: "{{ item }}"
+      state: present
+  with_items: "{{ provisioner.packages }}"
+  register: yum_result
+
+- name: stop libvirtd
+  service:
+      name: "libvirtd"
+      state: "stopped"
+  when: yum_result.changed
+
+- name: start libvirtd
+  service:
+      name: "libvirtd"
+      state: "started"
+      enabled: "yes"
+  when: yum_result.changed
+
+- name: check if host supports virtualization
+  include: validate.yml
+
+- name: setup the virthost
+  include: setup.yml
+
+- name: setup the networks
+  include: network.yml
+
+- name: check if private key exist on system
+  stat:
+      path: "/root/.ssh/id_rsa"
+  register: result
+
+- name: if private key doesn't exist, create it
+  shell: "ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''"
+  when: result.stat.exists != true
+
+- name: copy server private key from virthost for SSH proxy
+  fetch:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      flat: yes
+  with_items:
+      - {src: "~/.ssh/id_rsa", dest: "{{ inventory_dir }}/id_rsa"}
+      - {src: "~/.ssh/id_rsa.pub", dest: "{{ inventory_dir }}/id_rsa.pub"}
+
+- name: update file permissions
+  file:
+      path: "{{ item }}"
+      mode: 0600
+  with_items:
+      - "{{ inventory_dir }}/id_rsa"
+      - "{{ inventory_dir }}/id_rsa.pub"
+  delegate_to: localhost
+
+- name: Set up authorized_keys for the deploy user
+  authorized_key:
+      user: root
+      key: "{{ item }}"
+  with_file:
+    - "{{ inventory_dir }}/id_rsa.pub"
+
+- name: create images and vm's
+  include: vms.yml

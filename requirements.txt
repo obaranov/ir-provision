@@ -1,4 +1,5 @@
 pip
+-r plugin_requirements.txt
 git+https://github.com/rhos-infra/infrared-core.git@master#egg=infrared-core
 # install itself
 -e .

@@ -1,0 +1,2 @@
+# put non-ansible plugin specific requirements here
+# it is recommended to put an ansible specific requirements into the core module. 

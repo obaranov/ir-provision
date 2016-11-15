@@ -9,7 +9,8 @@ setup(
     packages=find_packages(),
     long_description=open(join(prj_dir, 'README.md')).read(),
     entry_points={
-        'console_scripts': ['infrared=main:main']
+        'console_scripts': ['infrared=main:main',
+                            'ir=main:main']
     },
     author='rhos-qe',
     author_email='rhos-qe-dept@redhat.com'

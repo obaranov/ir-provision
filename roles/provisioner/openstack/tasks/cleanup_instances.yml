@@ -5,7 +5,6 @@
       purge: yes
       cloud: "{{ provisioner.cloud | default(omit) }}"
       server: "{{ provisioner.prefix }}{{ node.value.name }}-{{ item }}"
-      floating_ip_address: ""
       wait: yes
   with_sequence: start=0 end="{{ node.value.amount | int - 1 }}"
   register: floating_ips
